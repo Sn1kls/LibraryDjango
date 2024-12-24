@@ -1,8 +1,9 @@
 from django.core.mail import send_mail
+from rest_framework.generics import GenericAPIView
+from rest_framework.mixins import RetrieveModelMixin
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.generics import RetrieveAPIView
 
 from users.serializers import UserSerializer
 from users.permissions import IsOwner
@@ -35,7 +36,10 @@ class PasswordResetView(APIView):
         return Response({"error": "Email is required"}, status=400)
 
 
-class UserDetailView(RetrieveAPIView):
+class UserDetailView(RetrieveModelMixin, GenericAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [IsAuthenticated, IsOwner]
+
+    def get(self, request, *args, **kwargs):
+        return self.retrieve(request, *args, **kwargs)
