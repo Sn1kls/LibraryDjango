@@ -14,15 +14,11 @@ class UserProfileView(APIView):
     permission_classes = [IsAuthenticated, IsOwner]
 
     def get(self, request):
-        return Response({
-            "username": request.user.username,
-            "email": request.user.email,
-        })
+        serializer = UserSerializer(request.user)
+        return Response(serializer.data)
 
 
 class PasswordResetView(APIView):
-    permission_classes = [AllowAny]
-
     def post(self, request):
         email = request.data.get("email")
         if email:
