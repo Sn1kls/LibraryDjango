@@ -2,8 +2,8 @@
 COMPOSE_FILE := docker-compose.yml
 DOCKER_COMPOSE := docker-compose -f $(COMPOSE_FILE)
 
-APP_CONTAINER := web
-DB_CONTAINER := db
+APP_CONTAINER := django
+DB_CONTAINER := postgres
 
 # Docker commands
 .PHONY: build up down stop restart logs ps
@@ -33,19 +33,19 @@ ps:
 .PHONY: makemigrations migrate createsuperuser shell collectstatic
 
 makemigrations:
-	$(DOCKER_COMPOSE) exec $(APP_CONTAINER) poetry run python manage.py makemigrations
+	$(DOCKER_COMPOSE) exec $(APP_CONTAINER) python manage.py makemigrations
 
 migrate:
-	$(DOCKER_COMPOSE) exec $(APP_CONTAINER) poetry run python manage.py migrate
+	$(DOCKER_COMPOSE) exec $(APP_CONTAINER) python manage.py migrate
 
 createsuperuser:
-	$(DOCKER_COMPOSE) exec $(APP_CONTAINER) poetry run python manage.py createsuperuser
+	$(DOCKER_COMPOSE) exec $(APP_CONTAINER) python manage.py createsuperuser
 
 shell:
-	$(DOCKER_COMPOSE) exec $(APP_CONTAINER) poetry run python manage.py shell
+	$(DOCKER_COMPOSE) exec $(APP_CONTAINER) python manage.py shell
 
 collectstatic:
-	$(DOCKER_COMPOSE) exec $(APP_CONTAINER) poetry run python manage.py collectstatic --noinput
+	$(DOCKER_COMPOSE) exec $(APP_CONTAINER) python manage.py collectstatic --noinput
 
 # Testing and linting
 .PHONY: test lint flake8 black

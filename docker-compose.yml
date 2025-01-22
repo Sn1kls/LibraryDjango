@@ -25,3 +25,9 @@ services:
     command: sh -c "python manage.py runserver 0.0.0.0:8000"
     env_file:
       - ./environment/django.env
+  
+  mailhog:
+    image: mailhog/mailhog
+    ports:
+      - "1025:1025"
+      - "8025:8025"
