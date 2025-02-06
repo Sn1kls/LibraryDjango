@@ -69,3 +69,4 @@ db-dump:
 
 db-restore:
 	$(DOCKER_COMPOSE) exec -T $(DB_CONTAINER) psql -U $$POSTGRES_USER $$POSTGRES_DB < db_dump.sql
+
