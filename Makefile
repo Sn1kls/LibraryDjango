@@ -56,10 +56,10 @@ test:
 lint: flake8 black
 
 flake8:
-	$(DOCKER_COMPOSE) exec $(APP_CONTAINER) poetry run flake8 .
+	$(DOCKER_COMPOSE) exec $(APP_CONTAINER) flake8 .
 
 black:
-	$(DOCKER_COMPOSE) exec $(APP_CONTAINER) poetry run black --check .
+	${DOCKER_COMPOSE} exec $(APP_CONTAINER) black . --exclude=migrations
 
 # Database commands
 .PHONY: db-dump db-restore
@@ -69,4 +69,3 @@ db-dump:
 
 db-restore:
 	$(DOCKER_COMPOSE) exec -T $(DB_CONTAINER) psql -U $$POSTGRES_USER $$POSTGRES_DB < db_dump.sql
-

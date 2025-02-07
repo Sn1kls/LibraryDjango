@@ -31,3 +31,11 @@ services:
     ports:
       - "1025:1025"
       - "8025:8025"
+
+  ngrok:
+    image: ngrok/ngrok:latest
+    command: "http django:8000"
+    ports:
+      - "4040:4040"
+    env_file:
+      - ./environment/ngrok.env

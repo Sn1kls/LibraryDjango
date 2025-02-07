@@ -1,10 +1,11 @@
 from django.urls import path
 from users.views import (
-    UserRetrieveView,
-    PasswordResetRequestView,
     PasswordResetConfirmView,
+    PasswordResetRequestView,
+    UserRegistrationView,
+    UserRetrieveUpdateView,
+    UserRetrieveView,
 )
-
 
 urlpatterns = [
     path("info/", UserRetrieveView.as_view(), name="user-retrieve"),
@@ -14,4 +15,6 @@ urlpatterns = [
         PasswordResetConfirmView.as_view(),
         name="reset-password-confirm",
     ),
+    path("register/", UserRegistrationView.as_view(), name="user-register"),
+    path("profile/<uuid:id>/", UserRetrieveUpdateView.as_view(), name="user-retrieve"),
 ]
