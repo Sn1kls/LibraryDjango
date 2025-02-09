@@ -19,6 +19,7 @@ isort = "^6.0.0"
 pandas = "^2.2.3"
 django-filter = "^24.3"
 bs4 = "^0.0.2"
+xlsxwriter = "^3.2.2"
 
 
 [build-system]
