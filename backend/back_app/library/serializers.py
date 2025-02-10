@@ -39,7 +39,3 @@ class BookSerializer(serializers.ModelSerializer):
 
 class BookInfoScrapeSerializer(serializers.Serializer):
     url = serializers.URLField(required=True)
-
-
-class ExternalBookInfoSerializer(serializers.Serializer):
-    isbn = serializers.CharField(max_length=20, help_text="ISBN книжки")
