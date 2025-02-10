@@ -88,7 +88,7 @@ class ScrapeBookInfoView(generics.GenericAPIView):
     serializer_class = BookInfoScrapeSerializer
 
     @swagger_auto_schema(
-        operation_description="Скрапінг інформації про книгу за URL та збереження (або оновлення) її в базі даних",
+        operation_description="Scraping book information by URL and saving (or updating) it in the database",
         request_body=BookInfoScrapeSerializer,
         responses={200: "Scraped book info and saved/updated in DB"},
     )
