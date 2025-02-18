@@ -14,7 +14,6 @@ from library.serializers import (
     BookInfoScrapeSerializer,
     BookSerializer,
     CategorySerializer,
-    ExternalBookInfoSerializer,
 )
 from rest_framework import filters, generics, permissions, status, viewsets
 from rest_framework.response import Response
