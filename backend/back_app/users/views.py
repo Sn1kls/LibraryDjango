@@ -5,12 +5,11 @@ from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import send_mail
 from django.shortcuts import get_object_or_404
 from django.utils.encoding import force_bytes
-from django.utils.http import urlsafe_base64_encode
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import generics, mixins, status
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.viewsets import GenericViewSet
 from users.models import User
 from users.permissions import IsOwnerOrAdmin
 from users.serializers import (
@@ -61,7 +60,6 @@ class PasswordResetConfirmView(mixins.UpdateModelMixin, generics.GenericAPIView)
     permission_classes = [IsAuthenticated, IsOwnerOrAdmin]
 
     def post(self, request, uidb64, token, *args, **kwargs):
-        from django.utils.http import urlsafe_base64_decode
 
         try:
             uid = urlsafe_base64_decode(uidb64).decode()
