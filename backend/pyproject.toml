@@ -2,7 +2,7 @@
 name = "backend"
 version = "0.1.0"
 description = ""
-authors = ["Snikls <macks.chigrin@gmail.com>"]
+authors = ["Snikls"]
 package-mode = false
 
 [tool.poetry.dependencies]

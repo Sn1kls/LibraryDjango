@@ -3,8 +3,8 @@ from users.views import (
     PasswordResetConfirmView,
     PasswordResetRequestView,
     UserRegistrationView,
-    UserRetrieveUpdateView,
     UserRetrieveView,
+    UserViewSet,
 )
 
 urlpatterns = [
@@ -16,5 +16,13 @@ urlpatterns = [
         name="reset-password-confirm",
     ),
     path("register/", UserRegistrationView.as_view(), name="user-register"),
-    path("profile/<uuid:id>/", UserRetrieveUpdateView.as_view(), name="user-retrieve"),
+    path(
+        "<uuid:pk>/",
+        UserViewSet.as_view({
+            "patch": "partial_update",
+            "put": "update",
+            "delete": "destroy",
+        }),
+        name="user-detail"
+    ),
 ]
