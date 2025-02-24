@@ -1,4 +1,7 @@
+import datetime
+
 from library.models import Book, Category
+from library.services import scrape_book_info
 from rest_framework import serializers
 
 
@@ -39,3 +42,15 @@ class BookSerializer(serializers.ModelSerializer):
 
 class BookInfoScrapeSerializer(serializers.Serializer):
     url = serializers.URLField(required=True)
+    
+    def validate_url(self, value):
+        return value
+
+    def create(self, validated_data):
+        url = validated_data.get("url")
+        try:
+            book, created = scrape_book_info(url)
+        except Exception as e:
+            raise serializers.ValidationError(f"Error scraping book: {str(e)}")
+        self.created = created
+        return book

@@ -5,7 +5,6 @@ from django.db import models
 
 
 class UserManager(BaseUserManager):
-
     def create_user(self, email, password=None, **extra_fields):
         if not email:
             raise ValueError("The Email field must be set")
@@ -19,11 +18,6 @@ class UserManager(BaseUserManager):
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
 
-        if extra_fields.get("is_staff") is not True:
-            raise ValueError("Superuser must have is_staff=True.")
-        if extra_fields.get("is_superuser") is not True:
-            raise ValueError("Superuser must have is_superuser=True.")
-
         return self.create_user(email, password, **extra_fields)
 
 
@@ -31,6 +25,7 @@ class User(AbstractUser):
     email = models.EmailField(unique=True)
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     username = models.CharField(max_length=15, unique=True)
+    extra_fields = models.JSONField(default=dict)
 
     USERNAME_FIELD = "username"
     EMAIL_FIELD = "email"

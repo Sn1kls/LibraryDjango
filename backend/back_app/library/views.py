@@ -1,10 +1,7 @@
-import datetime
 import io
 import logging
 
 import pandas as pd
-import requests
-from bs4 import BeautifulSoup
 from django.db.models.functions import ExtractYear
 from django.http import HttpResponse
 from django_filters.rest_framework import DjangoFilterBackend
@@ -86,50 +83,11 @@ class ScrapeBookInfoView(generics.GenericAPIView):
     permission_classes = [permissions.IsAdminUser]
     serializer_class = BookInfoScrapeSerializer
 
-    @swagger_auto_schema(
-        operation_description="Scraping book information by URL and saving (or updating) it in the database",
-        request_body=BookInfoScrapeSerializer,
-        responses={200: "Scraped book info and saved/updated in DB"},
-    )
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        url = serializer.validated_data.get("url")
-
-        try:
-            resp = requests.get(url)
-            resp.raise_for_status()
-        except Exception as e:
-            logger.error(f"Error querying URL {url}: {e}")
-            return Response(
-                {"detail": f"Error querying URL: {str(e)}"},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
-
-        soup = BeautifulSoup(resp.text, "html.parser")
-        title_tag = soup.find("h1")
-        meta_description = soup.find("meta", attrs={"name": "description"})
-        scraped_title = title_tag.text.strip() if title_tag else "Unknown"
-        scraped_description = (
-            meta_description["content"].strip()
-            if meta_description and meta_description.get("content")
-            else ""
-        )
-
-        default_category, _ = Category.objects.get_or_create(name="Scraped")
-
-        book, created = Book.objects.update_or_create(
-            title=scraped_title,
-            category=default_category,
-            defaults={
-                "author": "Unknown",
-                "publication_date": datetime.date.today(),
-                "description": scraped_description,
-            },
-        )
-        action = "created" if created else "updated"
-        logger.info(f"Book '{scraped_title}' {action} successfully.")
-
+        book = serializer.save()
+        action = "created" if serializer.created else "updated"
         book_serializer = BookSerializer(book)
         return Response(
             {"detail": f"Book {action} successfully.", "book": book_serializer.data},
