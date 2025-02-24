@@ -4,10 +4,10 @@ from rest_framework.response import Response
 from users.models import User
 from users.permissions import IsOwnerOrAdmin
 from users.serializers import (
-    UserSerializer,
-    UserRegistrationSerializer,
-    PasswordResetRequestSerializer,
     PasswordResetConfirmSerializer,
+    PasswordResetRequestSerializer,
+    UserRegistrationSerializer,
+    UserSerializer,
 )
 
 
@@ -50,6 +50,7 @@ class PasswordResetConfirmView(generics.GenericAPIView):
         return Response(
             {"detail": "Password has been reset."}, status=status.HTTP_200_OK
         )
+
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()

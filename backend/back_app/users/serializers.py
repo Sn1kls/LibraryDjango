@@ -1,14 +1,14 @@
-from django.contrib.auth.tokens import default_token_generator
+from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import send_mail
 from django.utils.encoding import force_bytes, force_str
-from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.conf import settings
+from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from rest_framework import serializers
 from users.models import User
 
-
 User = get_user_model()
+
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:

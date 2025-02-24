@@ -18,11 +18,13 @@ urlpatterns = [
     path("register/", UserRegistrationView.as_view(), name="user-register"),
     path(
         "<uuid:pk>/",
-        UserViewSet.as_view({
-            "patch": "partial_update",
-            "put": "update",
-            "delete": "destroy",
-        }),
-        name="user-detail"
+        UserViewSet.as_view(
+            {
+                "patch": "partial_update",
+                "put": "update",
+                "delete": "destroy",
+            }
+        ),
+        name="user-detail",
     ),
 ]
